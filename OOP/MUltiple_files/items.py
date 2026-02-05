@@ -1,10 +1,3 @@
-# Imagine if You have multiple classes that inherit from one another
-# If they are millions means that you will have to write the same code over and over again
-# Im talking about the __init_ method has to be copied to all classes
-# To avoid this we use super() function to call the parent class's __init__ method
-
-# inshort super() allows us to access methods from a parent class from within a child class
-
 import csv
 class Item:
     pay_rate = 0.8# An example of a class attribute
@@ -59,25 +52,3 @@ class Item:
                     quantity = int(item.get('quantity'))
                 )
 
-# INHERITANCE EXAMPLE
-class phone(Item):
-         def __init__(self, name: str, price: float, quantity: int, broken_phones=0):# Added data types for validation
-            # call to super function to access parent class methods
-            super().__init__(
-                name, price, quantity
-            )
-            assert broken_phones >= 0, f"Broken Phones {broken_phones} is not greater than or equal to zero!"
-            
-           
-
-phone1 = phone('iPhone',1000,5,1)
-print(f'Total price for phone 1: { phone1.calculate_total_price()}' )
-phone2 = phone('Samsung',900,4,2)
-
-
-print(phone.All) #shows the same as Item.All because of super()
-print(Item.All) #shows the same as phone.All because of super()
-
-
-# Next file we move to working with multiple files getters and setters
-# will be using items.py and phone.py and main.py files in multiple files folder

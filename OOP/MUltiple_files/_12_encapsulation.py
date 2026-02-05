@@ -1,10 +1,3 @@
-# Imagine if You have multiple classes that inherit from one another
-# If they are millions means that you will have to write the same code over and over again
-# Im talking about the __init_ method has to be copied to all classes
-# To avoid this we use super() function to call the parent class's __init__ method
-
-# inshort super() allows us to access methods from a parent class from within a child class
-
 import csv
 class Item:
     pay_rate = 0.8# An example of a class attribute
@@ -14,18 +7,33 @@ class Item:
         # validating received values using setter method
         assert price >= 0, f"Price {price} is not greater than or equal to zero!"
         assert quantity >= 0, f"Quantity {quantity} is not greater than or equal to zero!"
-        self.name = name
-        self.price = price
+        self.__name = name # private attribute(encapsulated)
+        self.__price = price
         self.quantity = quantity
 
         Item.All.append(self) # to keep track of all instances created
+    @property
+    def price(self):
+        return self.__price
 
+    def apply_discount(self):
+        self.__price = self.price * self.pay_rate
+    def apply_increment(self):
+        self.__price = self.price + self.price * self.pay_rate
+    @property
+    def name(self):
+        return self.__name # getter method to access private attribute
+    
+    @name.setter #setter method to allow updating private values
+    def name(self,value):
+         if len(value) > 10:
+              raise Exception("The name is too long!")  
+         self.__name = value
 
     def calculate_total_price(self):
         return self.price * self.quantity
     
-    def apply_discount(self):
-        self.price = self.price * self.pay_rate
+
     
     # staticmethod does not take cls or self as first argument
     # this is because static methods do not operate on an instance or class
@@ -55,29 +63,19 @@ class Item:
                 # This creates an instance, triggering __init__ which appends to Item.All
                 cls(
                     name = item.get('name'),
-                    price = float(item.get('price')),
+                    price = float(item.get('__price')),
                     quantity = int(item.get('quantity'))
                 )
 
-# INHERITANCE EXAMPLE
-class phone(Item):
-         def __init__(self, name: str, price: float, quantity: int, broken_phones=0):# Added data types for validation
-            # call to super function to access parent class methods
-            super().__init__(
-                name, price, quantity
-            )
-            assert broken_phones >= 0, f"Broken Phones {broken_phones} is not greater than or equal to zero!"
-            
-           
-
-phone1 = phone('iPhone',1000,5,1)
-print(f'Total price for phone 1: { phone1.calculate_total_price()}' )
-phone2 = phone('Samsung',900,4,2)
+# What encapsulation does is to restrict access to methods and variables
+# to prevent data from being modified accidentally
+ 
+ 
+# IF WE USE GETTERS TO MAKE VALUES READONLY
+# WHY USE SETTERS THEN?
+# Because sometimes we might want to change the value but with some restrictions
+# that are achievable through setters
+# FOR EXAMPLE WE MIGHT WANT TO RESTRICT THE NAME TO A CERTAIN LENGTH
 
 
-print(phone.All) #shows the same as Item.All because of super()
-print(Item.All) #shows the same as phone.All because of super()
-
-
-# Next file we move to working with multiple files getters and setters
-# will be using items.py and phone.py and main.py files in multiple files folder
+# The same information is in main.py 
