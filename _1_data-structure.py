@@ -182,7 +182,7 @@ my_set.add(6) #adding single item
 print(f'After adding 6: {my_set}')
 
 my_set.update([7, 8, 9]) #adding multiple items
-print(f'After adding multiple items: {my_set}')
+print(f'After adding multiple items: {my_set}')# output of myset is [1,2,3,4,5,6,7,8,9]
 
 # FUNCTIONS ON SETS
 
